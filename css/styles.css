@@ -1,0 +1,273 @@
+/* Tocco magico (#224) — il manifesto tipografico di uno spettacolo di magia, alla «Challenge to Houdini»
+   (Regent Theatre, Salford): carta crema, due inchiostri, caratteri in legno che cambiano larghezza a ogni riga.
+   Le righe «in legno» ([data-riempi]) riempiono la loro colonna: le misure le scrive _tcm_righe.mjs nell'index
+   (fra i marcatori RIGHE), per l'italiano e per l'inglese. */
+
+/* ══════════ reset tecnico (PLUMBING_V 1) ══════════ */
+[hidden] { display: none !important; }
+img { max-width: 100%; height: auto; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}
+
+/* ══════════ i colori e i caratteri ══════════ */
+:root {
+  --carta: #F1E6CF;
+  --carta-scura: #E6D6B6;
+  --rosso: #C4302B;
+  --rosso-scuro: #A3241F;
+  --blu: #2A3F8F;
+  --blu-scuro: #1E2E6B;
+  --inchiostro: #2A2420;
+  --grigio: #6A5E52;
+  --palco: #151213;
+  --f-legno: 'Holtwood One SC', 'Rockwell Extra Bold', Georgia, serif;
+  --f-stretto: 'Stint Ultra Condensed', 'Arial Narrow', Georgia, serif;
+  --f-grasso: 'Ultra', 'Rockwell Extra Bold', Georgia, serif;
+  --f-testo: 'Old Standard TT', Georgia, 'Times New Roman', serif;
+  --gutter: clamp(16px, 4vw, 56px);
+  --testata: 64px;
+  --colonna: 1040px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--testata) + 12px); -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  color: var(--inchiostro);
+  font: 400 1.125rem/1.6 var(--f-testo);
+  /* la carta: grana fine e qualche macchia leggera, come un manifesto vero */
+  background-color: var(--carta);
+  background-image:
+    radial-gradient(ellipse 42% 30% at 12% 18%, rgba(170, 128, 60, .07), rgba(170, 128, 60, 0) 70%),
+    radial-gradient(ellipse 30% 22% at 88% 62%, rgba(170, 128, 60, .06), rgba(170, 128, 60, 0) 70%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .27 0 0 0 0 .16 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23g)'/%3E%3C/svg%3E");
+  overflow-x: hidden;
+}
+a { color: inherit; }
+p { margin: 0 0 1em; }
+.sr { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+.salta-al-testo { position: absolute; left: -9999px; top: 8px; z-index: 100; padding: 10px 14px; background: var(--inchiostro); color: var(--carta); font: 700 .9rem/1 var(--f-testo); }
+.salta-al-testo:focus { left: 8px; }
+:focus-visible { outline: 3px solid var(--blu); outline-offset: 3px; }
+
+/* ══════════ le righe in legno ══════════ */
+.legno { display: block; white-space: nowrap; line-height: .92; color: var(--rosso); text-transform: uppercase; }
+.legno--stretto { font-family: var(--f-stretto); font-weight: 400; letter-spacing: .01em; line-height: .86; }
+.legno--largo { font-family: var(--f-legno); font-weight: 400; line-height: .98; }
+.legno--grasso { font-family: var(--f-grasso); font-weight: 400; color: var(--blu); line-height: 1; }
+.legno--blu { color: var(--blu); }
+.legno--rosso { color: var(--rosso); }
+/* misura di riserva (i browser senza unità cqi): la vera la scrive _tcm_righe.mjs */
+.legno--stretto { font-size: 9vw; }
+.legno--largo { font-size: 7vw; }
+.legno--grasso { font-size: 5vw; }
+.carta-righe, .manifesto__testa, .numero, .annuncio, .pubblico, .biglietteria, .programma { container-type: inline-size; }
+
+.riga-spaziata { margin: 0; font: 700 .86rem/1.3 var(--f-testo); letter-spacing: .32em; text-transform: uppercase; color: var(--blu); }
+.riga-spaziata--grande { font-size: clamp(.84rem, 1.7vw, 1.12rem); letter-spacing: .26em; }
+
+/* la riga ondulata blu e le doppie righe del manifesto */
+hr { border: 0; margin: 0; }
+.onda { height: 12px; margin: 22px auto; width: min(560px, 86%); background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='12'%3E%3Cpath d='M0 6 Q6 1 12 6 T24 6' fill='none' stroke='%232A3F8F' stroke-width='1.8'/%3E%3C/svg%3E") repeat-x center / 24px 12px; }
+.doppia { height: 7px; border-top: 3px solid var(--inchiostro); border-bottom: 1px solid var(--inchiostro); margin: 0 auto 34px; width: 100%; }
+.doppia--corta { width: min(420px, 70%); margin-bottom: 26px; }
+.filetto { height: 1px; background: var(--inchiostro); width: min(300px, 50%); margin: 30px auto; }
+
+/* ══════════ la testata ══════════ */
+.testata {
+  position: sticky; top: 0; z-index: 50;
+  display: flex; align-items: center; gap: 16px;
+  height: var(--testata); padding: 0 var(--gutter);
+  background: var(--carta);
+  border-bottom: 3px double var(--inchiostro);
+}
+.marchio { flex: none; font: 400 1.18rem/1 var(--f-legno); color: var(--rosso); text-decoration: none; text-transform: uppercase; letter-spacing: .01em; }
+.voci { display: none; gap: 30px; margin-left: auto; }
+.voci a { font: 700 .8rem/1 var(--f-testo); letter-spacing: .2em; text-transform: uppercase; text-decoration: none; color: var(--blu); padding: 10px 0; }
+.voci a:hover { color: var(--rosso); }
+.testata__destra { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+.lingue { display: flex; border: 1.5px solid var(--inchiostro); }
+.lingue button { min-width: 40px; min-height: 36px; padding: 8px 10px; border: 0; background: transparent; color: var(--inchiostro); font: 700 .74rem/1 var(--f-testo); letter-spacing: .1em; cursor: pointer; }
+.lingue button[aria-pressed="true"] { background: var(--inchiostro); color: var(--carta); }
+.testata__tel { display: none; align-items: center; gap: 8px; min-height: 40px; padding: 8px 14px; background: var(--rosso-scuro); color: #FFF7EA; font: 700 .86rem/1 var(--f-testo); letter-spacing: .06em; text-decoration: none; white-space: nowrap; }
+.testata__tel:hover { background: var(--blu); }
+.testata__tel-etichetta { font-size: .72rem; letter-spacing: .16em; text-transform: uppercase; }
+.burger { width: 44px; height: 44px; display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; border: 1.5px solid var(--inchiostro); background: transparent; cursor: pointer; }
+.burger span { display: block; width: 20px; height: 2px; background: var(--inchiostro); }
+.indice-mobile { position: fixed; top: var(--testata); left: 0; right: 0; z-index: 49; display: flex; flex-direction: column; padding: 6px var(--gutter) 16px; background: var(--carta); border-bottom: 3px double var(--inchiostro); }
+.indice-mobile a { padding: 15px 4px; border-bottom: 1px solid rgba(42, 36, 32, .25); font: 700 .9rem/1 var(--f-testo); letter-spacing: .16em; text-transform: uppercase; text-decoration: none; color: var(--blu); }
+@media (min-width: 1000px) { .voci { display: flex; } .testata__destra { margin-left: 26px; } .burger { display: none; } .testata__tel { display: inline-flex; } }
+@media (max-width: 360px) { .testata { gap: 10px; padding-left: 12px; padding-right: 12px; } .marchio { font-size: 1.02rem; } .lingue button { min-width: 34px; padding: 8px 7px; } .burger { width: 42px; height: 42px; } }
+
+/* ══════════ il manifesto (hero) ══════════ */
+.manifesto {
+  display: grid; grid-template-columns: minmax(0, 1fr);
+  gap: 22px; padding: 26px var(--gutter) 44px;
+  text-align: center;
+}
+.manifesto__testa { max-width: 760px; width: 100%; margin: 0 auto; }
+.manifesto__testa .riga-spaziata:first-child { margin-bottom: 14px; }
+.manifesto__trucco { margin: 0; }
+.manifesto__uno { margin: 8px 0 12px; font: italic 400 clamp(1.1rem, 2.4vw, 1.6rem)/1.2 var(--f-testo); color: var(--inchiostro); }
+.manifesto__nome { margin: 0 0 14px; font-weight: 400; }
+.manifesto__piede { max-width: 760px; width: 100%; margin: 0 auto; }
+.manifesto__piede .onda { margin-top: 4px; }
+
+.azioni { margin: 0 0 14px; }
+.bottone {
+  display: inline-flex; align-items: center; justify-content: center; min-height: 52px; padding: 14px 26px;
+  background: var(--rosso-scuro); color: #FFF7EA; text-decoration: none;
+  font: 700 1.02rem/1.2 var(--f-testo); letter-spacing: .06em;
+  box-shadow: 0 0 0 3px var(--carta), 0 0 0 4.5px var(--rosso-scuro);
+}
+.bottone:hover { background: var(--blu); box-shadow: 0 0 0 3px var(--carta), 0 0 0 4.5px var(--blu); }
+.stato-riga { margin: 0 0 10px; }
+.stato { display: inline-flex; align-items: center; gap: 8px; font: 700 .86rem/1.3 var(--f-testo); letter-spacing: .05em; color: var(--inchiostro); }
+.stato::before { content: ""; flex: none; width: 10px; height: 10px; border-radius: 50%; background: #8A7F73; }
+.stato.is-aperto::before { background: #2E7D4F; box-shadow: 0 0 0 3px rgba(46, 125, 79, .2); }
+.voti { margin: 0; }
+.voti a { text-decoration: none; font: 400 1rem/1.3 var(--f-testo); color: var(--inchiostro); }
+.voti b { font: 400 1.5rem/1 var(--f-legno); color: var(--rosso); margin-right: 4px; }
+
+/* il palco: la loro foto sulla parete nera, coperta dalla mantellina (la firma) */
+.palco { margin: 0 auto; width: min(100%, 460px); }
+.palco__cornice {
+  position: relative; aspect-ratio: 3 / 4; overflow: hidden;
+  background: var(--palco);
+  box-shadow: 0 0 0 6px var(--carta), 0 0 0 8px var(--rosso), 0 22px 44px -26px rgba(42, 36, 32, .55);
+}
+.palco__foto { display: block; width: 100%; height: 100%; object-fit: cover; }
+.palco__drappo, .palco__stoffa { position: absolute; left: 0; top: 0; width: 100%; height: 100%; pointer-events: none; }
+.palco__stoffa { display: none; }
+.palco.is-stoffa .palco__stoffa { display: block; }
+/* la mantellina in attesa: le sei strisce piatte, identiche al primo fotogramma del canvas (bordo -2%, largo 104%) */
+.palco__drappo {
+  display: none; left: -2%; width: 104%; height: 103%;
+  background: linear-gradient(90deg, #E4172A 0 16.6667%, #EE6A12 16.6667% 33.3333%, #E9CC1C 33.3333% 50%, #3E9442 50% 66.6667%, #3F66D6 66.6667% 83.3333%, #6E3590 83.3333% 100%);
+}
+.firma-attesa .palco__drappo { display: block; }
+.palco__cornice[role="button"] { cursor: pointer; }
+.palco__cornice[role="button"]:focus-visible { outline: none; }
+.palco__cornice[role="button"]:focus-visible { box-shadow: 0 0 0 6px var(--carta), 0 0 0 9px var(--blu); }
+.palco__didascalia { margin-top: 18px; }
+.palco__ecco { display: block; font: 400 1.35rem/1 var(--f-legno); color: var(--blu); text-transform: uppercase; }
+.palco__sugg { display: block; margin-top: 6px; font: italic 400 .95rem/1.3 var(--f-testo); color: var(--grigio); }
+.reduced-motion .palco__sugg, html:not(.js) .palco__sugg { display: none; }
+
+@media (min-width: 900px) {
+  .manifesto {
+    grid-template-columns: minmax(0, 1.12fr) minmax(0, .88fr);
+    grid-template-rows: auto auto;
+    column-gap: clamp(36px, 5vw, 90px); row-gap: 0;
+    align-items: center;
+    min-height: calc(100vh - var(--testata)); min-height: calc(100svh - var(--testata));
+    padding-top: 30px; padding-bottom: 40px;
+  }
+  .manifesto__testa { grid-column: 1; grid-row: 1; align-self: end; }
+  .manifesto__piede { grid-column: 1; grid-row: 2; align-self: start; }
+  .palco { grid-column: 2; grid-row: 1 / span 2; width: min(100%, calc((100svh - var(--testata) - 150px) * .75)); }
+}
+
+/* ══════════ l'annuncio ══════════ */
+.annuncio, .programma, .pubblico, .biglietteria { max-width: var(--colonna); margin: 0 auto; padding: 30px var(--gutter) 40px; text-align: center; }
+.annuncio__saluto { margin: 0 0 10px; font: italic 400 clamp(1.5rem, 3.4vw, 2.3rem)/1.2 var(--f-testo); color: var(--blu); text-align: left; max-width: 62ch; margin-left: auto; margin-right: auto; }
+.annuncio__lettera { max-width: 62ch; margin: 0 auto; text-align: justify; hyphens: auto; font-size: clamp(1.1rem, 1.9vw, 1.32rem); line-height: 1.62; }
+.annuncio__lettera p { text-indent: 2.2em; }
+.annuncio__citazione { margin: 30px auto 0; max-width: 40ch; }
+.annuncio__citazione p { margin: 0 0 8px; font: italic 400 clamp(1.3rem, 2.8vw, 1.9rem)/1.3 var(--f-testo); color: var(--rosso-scuro); }
+.annuncio__citazione footer { font: 700 .8rem/1.3 var(--f-testo); letter-spacing: .22em; text-transform: uppercase; color: var(--blu); }
+.annuncio__continuato { margin: 0 auto; max-width: 820px; container-type: inline-size; }
+.annuncio__quando { margin: 14px auto 0; max-width: 820px; container-type: inline-size; }
+.annuncio__nota { margin: 14px 0 0; font-size: 1.05rem; color: var(--grigio); }
+
+/* ══════════ il programma ══════════ */
+.programma { padding-top: 20px; }
+.programma__titolo { margin: 0; }
+.programma__titolo .legno { margin: 0 auto; }
+.programma__sotto { margin: 12px 0 44px; font: italic 400 clamp(1.1rem, 2vw, 1.35rem)/1.3 var(--f-testo); }
+.numero { margin: 0 auto 64px; }
+.numero__n { margin: 0 0 10px; font: 400 clamp(.95rem, 1.6vw, 1.15rem)/1 var(--f-legno); letter-spacing: .12em; color: var(--blu); text-transform: uppercase; }
+.numero__titolo { margin: 0; font-weight: 400; }
+.numero__titolo .legno, .numero__cosa .legno, .pubblico__titolo .legno, .biglietteria__titolo .legno, .biglietteria__come .legno, .annuncio .legno { margin: 0 auto; width: max-content; max-width: 100%; }
+.numero__ovvero { margin: 6px 0 4px; font: italic 400 1.2rem/1.2 var(--f-testo); color: var(--inchiostro); }
+.numero__cosa { margin: 0; }
+.numero__corpo { display: grid; grid-template-columns: minmax(0, 1fr); gap: 26px; justify-items: center; margin-top: 8px; }
+.numero__testo { max-width: 60ch; text-align: justify; hyphens: auto; font-size: clamp(1.08rem, 1.7vw, 1.22rem); }
+.numero__testo p:first-child::first-letter { float: left; margin: .06em .08em 0 0; font: 400 3.1em/.8 var(--f-legno); color: var(--rosso); }
+.mano { margin: 0; text-align: left; font: 700 1rem/1.45 var(--f-testo); color: var(--blu); }
+.mano::before { content: "☞"; margin-right: .45em; font-size: 1.3em; line-height: 0; vertical-align: -.08em; }
+
+/* il medaglione: la foto del numero in un ovale, come i ritratti dei prestigiatori */
+.medaglione {
+  display: block; width: min(300px, 72%); aspect-ratio: 3 / 4; padding: 0; border: 0; border-radius: 50%; overflow: hidden; cursor: zoom-in;
+  background: var(--palco);
+  box-shadow: 0 0 0 6px var(--carta), 0 0 0 8px var(--blu), 0 0 0 12px var(--carta), 0 0 0 13px var(--blu);
+}
+.medaglione img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .6s ease; }
+.medaglione:hover img { transform: scale(1.04); }
+.numero--rovescio .medaglione { box-shadow: 0 0 0 6px var(--carta), 0 0 0 8px var(--rosso), 0 0 0 12px var(--carta), 0 0 0 13px var(--rosso); }
+@media (min-width: 900px) {
+  .numero__corpo { grid-template-columns: 300px minmax(0, 1fr); gap: 56px; align-items: center; justify-items: stretch; margin-top: 18px; }
+  .numero--rovescio .numero__corpo { grid-template-columns: minmax(0, 1fr) 300px; }
+  .numero--rovescio .medaglione { order: 2; }
+  .medaglione { width: 100%; }
+}
+
+/* ══════════ il pubblico ══════════ */
+.pubblico__titolo { margin: 0; }
+.pubblico__voto { margin: 18px 0 0; }
+.pubblico__voto .legno { display: inline-block; vertical-align: baseline; width: auto; }
+.pubblico__su { display: block; margin-top: 8px; font: 700 .9rem/1.3 var(--f-testo); letter-spacing: .2em; text-transform: uppercase; color: var(--blu); }
+.recensioni { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; text-align: left; }
+.recensione { padding: 24px 0; border-bottom: 1px solid rgba(42, 36, 32, .35); }
+.recensione blockquote { margin: 0; }
+.recensione blockquote p { margin: 0 0 10px; font: italic 400 1.14rem/1.55 var(--f-testo); }
+.recensione__chi { margin: 0; font: 700 .76rem/1.4 var(--f-testo); letter-spacing: .18em; text-transform: uppercase; color: var(--blu); }
+.pubblico__nota { margin: 22px 0 0; font: italic 400 .98rem/1.4 var(--f-testo); color: var(--grigio); }
+@media (min-width: 900px) {
+  .recensioni { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 64px; background: linear-gradient(var(--inchiostro), var(--inchiostro)) center / 1px 100% no-repeat; }
+}
+
+/* ══════════ la biglietteria ══════════ */
+.biglietteria__titolo { margin: 0; }
+.biglietteria__come { margin: 12px 0 0; }
+.numerone { margin: 18px 0 8px; }
+.numerone a { text-decoration: none; display: inline-block; }
+.numerone a:hover .legno { color: var(--blu); }
+.orari { margin: 6px auto 24px; border-collapse: collapse; min-width: min(420px, 100%); font-size: 1.1rem; }
+.orari th, .orari td { padding: 9px 14px; border-bottom: 1px dotted rgba(42, 36, 32, .5); }
+.orari th { text-align: left; font-weight: 700; font-variant: small-caps; letter-spacing: .06em; font-size: 1.12em; }
+.orari td { text-align: right; font-variant-numeric: lining-nums tabular-nums; }
+.orari tr.is-today { background: rgba(196, 48, 43, .12); }
+.orari tr.is-today th { color: var(--rosso-scuro); }
+.dati { margin: 0 auto 18px; display: grid; gap: 10px; max-width: 560px; text-align: left; }
+.dati div { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 12px; align-items: baseline; }
+.dati dt { font: 700 .74rem/1.3 var(--f-testo); letter-spacing: .2em; text-transform: uppercase; color: var(--blu); }
+.dati dd { margin: 0; }
+.link { color: var(--blu); font-weight: 700; }
+.link:hover { color: var(--rosso); }
+.biglietteria__strada { margin: 0 0 20px; }
+.mappa { margin: 0 auto 40px; max-width: 760px; box-shadow: 0 0 0 5px var(--carta), 0 0 0 7px var(--inchiostro); }
+.mappa iframe { display: block; width: 100%; height: 360px; border: 0; filter: sepia(.25) saturate(.9); }
+.promessa { margin: 0 auto; max-width: 30em; font: italic 400 clamp(1.15rem, 2.2vw, 1.5rem)/1.4 var(--f-testo); }
+.promessa__nome { font: normal 400 1.15em/1 var(--f-legno); color: var(--rosso); text-transform: uppercase; }
+
+/* ══════════ la coda ══════════ */
+.coda { margin-top: 40px; padding: 44px var(--gutter) 52px; background: var(--palco); color: #EFE4CC; text-align: center; }
+.coda__nome { margin: 0 0 12px; font: 400 clamp(1.6rem, 4vw, 2.4rem)/1 var(--f-legno); color: #F1E6CF; text-transform: uppercase; }
+.coda__riga { margin: 0 0 12px; font-size: 1rem; }
+.coda__cred { margin: 0 auto 16px; max-width: 60ch; font-size: .92rem; color: #CBBFA8; }
+.coda a { color: #F6EBD3; }
+.link--chiaro { color: #F6EBD3; }
+
+/* ══════════ lightbox ══════════ */
+#lightbox { position: fixed; inset: 0; z-index: 90; display: flex; align-items: center; justify-content: center; padding: 24px; background: rgba(21, 18, 19, .95); }
+#lightbox img { max-width: min(1100px, 100%); max-height: 88vh; width: auto; }
+#lightboxClose { position: absolute; top: 14px; right: 16px; width: 48px; height: 48px; border: 2px solid rgba(255, 255, 255, .6); border-radius: 50%; background: transparent; color: #fff; font-size: 32px; line-height: 1; cursor: pointer; }
+
+/* ══════════ reveal (plumbing) ══════════ */
+.js .reveal { opacity: 0; }
+.js .reveal.in-view { opacity: 1; }
+html:not(.js) .reveal { opacity: 1; }
+.reduced-motion .reveal { opacity: 1 !important; }
